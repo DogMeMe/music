@@ -1,14 +1,20 @@
-import { AxiosPromise } from 'axios'
 import http from '../util/http'
+import { HttpResponse } from '@/types/http'
+import { AxiosResponse } from 'axios'
 
-export const getRecommend = (): AxiosPromise => {
+export interface IBanner {
+    banners: object[],
+    code: number
+}
+
+export const getRecommend = () => {
     return http({
         url: '/personalized'
     })
 }
 
-export const getBanner = (): AxiosPromise => {
-    return http({
+export const getBanner = () => {
+    return http.request({
         url: '/banner?type=1'
     })
 }
