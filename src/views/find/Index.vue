@@ -17,7 +17,7 @@
       :key="targetId"
     >
       <img v-lazy="pic" />
-      <div class="banner-type" :style="{ background: titleColor }">
+      <div class="banner-type" :class="`${titleColor}-bg`">
         {{ typeTitle }}
       </div>
     </van-swipe-item>
@@ -31,9 +31,11 @@
 </template>
 
 <script lang="ts">
-import { getRecommend, getBanner } from "@/api/find";
+import { getBanner } from "@/api/find";
+import { IBanner } from "@/types/find";
 import { onMounted, reactive, ref, toRefs } from "vue";
 import { Icon, Search, Swipe, SwipeItem } from "vant";
+import { AxiosPromise, AxiosProxyConfig } from "axios";
 export default {
   name: "Find",
   components: {
@@ -43,9 +45,9 @@ export default {
     [SwipeItem.name]: SwipeItem,
   },
   setup() {
-    // let banner = ref(null)
+    let banner = ref(null);
     const state = reactive({
-      banners: [],
+      banners: [] as object[],
       links: [
         { icon: "day", name: "每日推荐" },
         { icon: "fm", name: "私人FM" },
@@ -59,13 +61,13 @@ export default {
       bannerHeight: 138,
     });
     onMounted(async () => {
-      // banner.value = ref('banner')
-      const res = await getBanner();
-      state.banners = res.data.banners;
+      const res = <IBanner>await getBanner();
+      state.banners = res.banners;
+      // banner = ref('banner')
     });
     return {
       ...toRefs(state),
-      // banner
+      banner,
     };
   },
 };
@@ -116,6 +118,12 @@ header {
       font-size: 12px;
       padding: 2px 5px;
       border-radius: 12px 0;
+      &.red-bg {
+        background: #fa4345;
+      }
+      &.blue-bg {
+        background: #3d9ecc;
+      }
     }
   }
   .van-swipe__indicator {
@@ -138,11 +146,10 @@ header {
       border-radius: 50%;
       background: #fff1f1;
       & ~ span {
-      margin-top: 3px;
-      font-size: 13px;
+        margin-top: 3px;
+        font-size: 13px;
+      }
     }
-    }
-    
   }
 }
 </style>

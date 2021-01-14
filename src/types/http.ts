@@ -1,3 +1,5 @@
-export interface HttpResponse {
-    code: number
-  }
+export interface IResponse {
+  code: number,
+  message? :string,
+  [param: string]: any
+}

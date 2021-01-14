@@ -1,20 +1,7 @@
-import http from '../util/http'
-import { HttpResponse } from '@/types/http'
-import { AxiosResponse } from 'axios'
 
-export interface IBanner {
-    banners: object[],
-    code: number
-}
+import { IResponse } from '@/types/http'
+import Api from './index'
 
-export const getRecommend = () => {
-    return http({
-        url: '/personalized'
-    })
-}
-
-export const getBanner = () => {
-    return http.request({
-        url: '/banner?type=1'
-    })
+export const getBanner = (): Promise<IResponse> => {
+    return Api('/banner?type=1')
 }
