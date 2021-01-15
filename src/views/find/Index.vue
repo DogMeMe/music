@@ -1,9 +1,8 @@
 <template>
-  <header>
-    <van-icon name="wap-nav" badge="2" />
+  <i-header :class="`header ${headerColor}-header`">
     <van-search placeholder="2020年度听歌报告" />
     <i class="iconfont tinggeshiqu" />
-  </header>
+  </i-header>
   <van-swipe
     ref="banner"
     class="banner"
@@ -11,10 +10,12 @@
     :height="bannerHeight"
     indicator-color="#fff"
     loop
+    @change="bannerChange"
   >
     <van-swipe-item
       v-for="{ pic, targetId, typeTitle, titleColor } in banners"
       :key="targetId"
+      :class="`item-${titleColor}-bg`"
     >
       <img v-lazy="pic" />
       <div class="banner-type" :class="`${titleColor}-bg`">
@@ -32,22 +33,24 @@
 
 <script lang="ts">
 import { getBanner } from "@/api/find";
-import { IBanner } from "@/types/find";
+import { IBanner, IBannerResponse } from "@/types/find";
 import { onMounted, reactive, ref, toRefs } from "vue";
-import { Icon, Search, Swipe, SwipeItem } from "vant";
+import { Icon, Swipe, SwipeItem, Search } from "vant";
 import { AxiosPromise, AxiosProxyConfig } from "axios";
+import IHeader from "@/components/Iheader.vue";
 export default {
   name: "Find",
   components: {
     [Icon.name]: Icon,
-    [Search.name]: Search,
     [Swipe.name]: Swipe,
     [SwipeItem.name]: SwipeItem,
+    [Search.name]: Search,
+    IHeader,
   },
   setup() {
     let banner = ref(null);
     const state = reactive({
-      banners: [] as object[],
+      banners: [] as IBanner[],
       links: [
         { icon: "day", name: "每日推荐" },
         { icon: "fm", name: "私人FM" },
@@ -59,44 +62,45 @@ export default {
         { icon: "game", name: "游戏专区" },
       ],
       bannerHeight: 138,
+      headerColor: 'blue',
     });
+    const bannerChange = (index: number): void => {
+      state.headerColor = state.banners[index].titleColor;
+    };
     onMounted(async () => {
-      const res = <IBanner>await getBanner();
+      const res = <IBannerResponse>await getBanner();
       state.banners = res.banners;
       // banner = ref('banner')
     });
     return {
       ...toRefs(state),
       banner,
+      bannerChange,
     };
   },
 };
 </script>
 
-<style lang="scss">
-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  i {
-    padding: 0 10px;
-    font-size: 16px;
-    &.van-icon-wap-nav {
-      .van-badge--fixed {
-        right: 10px;
-      }
-    }
+<style lang="scss" scoped>
+.header {
+  &.blue-header {
+    background: linear-gradient(#e0e7f1, #cfdef0);
+  }
+  &.red-header {
+    background: linear-gradient(#e6e1dd, #f3efec);
   }
   .van-search {
     flex: 1;
-    padding: 10px;
-    .van-search__content {
-      border-radius: 14px;
-      background: #eff1f0;
-      .van-icon-search {
-        padding: 0;
-      }
+    padding: 10px 0;
+    background: inherit;
+    ::v-deep .van-search__content {
+      padding-left: 8px;
+      border-radius: 15px;
     }
+  }
+  .iconfont.tinggeshiqu {
+    font-size: 18px;
+    padding: 12px;
   }
 }
 .van-swipe.banner {
@@ -105,6 +109,18 @@ header {
     text-align: center;
     padding: 0 10px;
     box-sizing: border-box;
+    &.item-blue-bg {
+      background: linear-gradient(#cfdef0, #fff 70%);
+    }
+    &.item-red-bg {
+      background: linear-gradient(#f3efec, #fff 70%);
+    }
+    .header-bg {
+      height: 54px;
+      position: fixed;
+      width: 100%;
+      top: 0;
+    }
     img {
       width: 100%;
       display: block;
@@ -134,6 +150,7 @@ header {
 }
 .link.van-swipe {
   padding: 10px 0;
+  background: #fff;
   .van-swipe-item {
     display: flex;
     flex-direction: column;

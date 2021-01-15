@@ -3,4 +3,8 @@
 </template>
 
 <style lang="scss">
+html {
+  background: #f5f5f5;
+  font-size: 14px;
+}
 </style>
