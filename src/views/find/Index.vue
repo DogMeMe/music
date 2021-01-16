@@ -1,34 +1,36 @@
 <template>
-  <i-header :class="`header ${headerColor}-header`">
-    <van-search placeholder="2020年度听歌报告" />
-    <i class="iconfont tinggeshiqu" />
-  </i-header>
-  <van-swipe
-    ref="banner"
-    class="banner"
-    :autoplay="3000"
-    :height="bannerHeight"
-    indicator-color="#fff"
-    loop
-    @change="bannerChange"
-  >
-    <van-swipe-item
-      v-for="{ pic, targetId, typeTitle, titleColor } in banners"
-      :key="targetId"
-      :class="`item-${titleColor}-bg`"
+  <div class="main">
+    <i-header :class="`header ${headerColor}-header`">
+      <van-search placeholder="2020年度听歌报告" />
+      <i class="iconfont tinggeshiqu" />
+    </i-header>
+    <van-swipe
+      ref="banner"
+      class="banner"
+      :autoplay="3000"
+      :height="bannerHeight"
+      indicator-color="#fff"
+      loop
+      @change="bannerChange"
     >
-      <img v-lazy="pic" />
-      <div class="banner-type" :class="`${titleColor}-bg`">
-        {{ typeTitle }}
-      </div>
-    </van-swipe-item>
-  </van-swipe>
-  <van-swipe class="link" :width="80" :show-indicators="false" :loop="false">
-    <van-swipe-item v-for="({ name, icon }, index) in links" :key="index">
-      <i :class="`iconfont ${icon}-icon link-icon`" />
-      <span>{{ name }}</span>
-    </van-swipe-item>
-  </van-swipe>
+      <van-swipe-item
+        v-for="{ pic, targetId, typeTitle, titleColor } in banners"
+        :key="targetId"
+        :class="`item-${titleColor}-bg`"
+      >
+        <img v-lazy="pic" />
+        <div class="banner-type" :class="`${titleColor}-bg`">
+          {{ typeTitle }}
+        </div>
+      </van-swipe-item>
+    </van-swipe>
+    <van-swipe class="link" :width="80" :show-indicators="false" :loop="false">
+      <van-swipe-item v-for="({ name, icon }, index) in links" :key="index">
+        <i :class="`iconfont ${icon}-icon link-icon`" />
+        <span>{{ name }}</span>
+      </van-swipe-item>
+    </van-swipe>
+  </div>
 </template>
 
 <script lang="ts">
@@ -62,7 +64,7 @@ export default {
         { icon: "game", name: "游戏专区" },
       ],
       bannerHeight: 138,
-      headerColor: 'blue',
+      headerColor: "red",
     });
     const bannerChange = (index: number): void => {
       state.headerColor = state.banners[index].titleColor;

@@ -28,5 +28,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-
+.main{
+  padding-bottom: 90px;
+}
 </style>

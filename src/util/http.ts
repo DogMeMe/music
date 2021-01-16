@@ -7,11 +7,11 @@ const axiosInstance = axios.create({
 })
 
 axiosInstance.interceptors.response.use((response: AxiosResponse): AxiosPromise => {
-    if (response.status === 200 && response.data && response.data.code === 200) {
+    if (response.status === 200 && response.data.code === 200) {
         return Promise.resolve(response)
     }
     return Promise.reject(response)
-}, (error: AxiosError) => {
+}, (error) => {
     return Promise.reject(error);
 })
 
