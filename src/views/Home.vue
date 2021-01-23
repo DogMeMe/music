@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import { Tabbar, TabbarItem } from "vant";
-import { defineComponent, onMounted } from "vue";
+import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "Home",
@@ -20,6 +20,7 @@ export default defineComponent({
     [TabbarItem.name]: TabbarItem
   },
   setup() {
+   
     return {
 
     }

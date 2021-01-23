@@ -11,15 +11,20 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: '/find',
         name: 'Find',
-        component: () => import(/* webpackChunkName: "find" */ '../views/find/Index.vue')
+        component: () => import(/* webpackChunkName: "find" */ '@/views/find/Index.vue')
       },
       {
         path: '/self',
         name: 'Self',
-        component: () => import(/* webpackChunkName: "self" */ '../views/self/Index.vue')
+        component: () => import(/* webpackChunkName: "self" */ '@/views/self/Index.vue')
       }
     ]
-  }
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: import(/* webpackChunkName: "login" */ '@/views/login/Index.vue')
+  },
 ]
 
 const router = createRouter({                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        

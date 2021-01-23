@@ -7,7 +7,7 @@ module.exports = {
     outputDir: 'dist',
     indexPath: 'index.html',
     devServer: {
-        proxy: 'http://localhost:3000'
+        proxy: 'http://192.168.2.194:3000'
     },
     configureWebpack: {
         resolve: {
@@ -30,7 +30,10 @@ module.exports = {
                                 tsImportPlugin({
                                     libraryName: 'vant',
                                     libraryDirectory: 'es',
-                                    style: name => `${name}/style/less`
+                                    style: name => {
+                                        console.log(name)
+                                        return `${name}/style/less`
+                                    }
                                 })
                             ]
                         }

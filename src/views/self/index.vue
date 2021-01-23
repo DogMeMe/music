@@ -1,7 +1,14 @@
 <template>
-  <i-header />
+  <i-header>
+    <div v-show="headerLoginVisible" class="login">
+      <div class="avator-box">
+        <i class="iconfont avator" />
+      </div>
+      <span>立即登录</span>
+    </div>
+  </i-header>
   <div class="main">
-    <div class="login">
+    <div class="login" @click="handlerLogin">
       <div class="avator-box">
         <i class="iconfont avator" />
       </div>
@@ -63,7 +70,9 @@ import BorderClick from "@/components/BorderClick.vue";
 import { IRecommend, IRecommendResponse } from "@/types/self";
 import { getPersonalized } from "@/api/self";
 import { Icon, Tab, Tabs } from "vant";
-import { onMounted, reactive } from "vue";
+import { computed, onMounted, reactive, toRefs } from "vue";
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 export default {
   name: "Self",
   components: {
@@ -76,6 +85,8 @@ export default {
     [Tab.name]: Tab,
   },
   setup() {
+    const store = useStore();
+    const router = useRouter();
     const state = reactive({
       apps: [
         { name: "本地/下载", icon: "self-download" },
@@ -88,6 +99,7 @@ export default {
       ],
       likeNum: 27,
       recommends: [] as IRecommend[],
+      headerLoginVisible: computed(() => store.state.home.scrollHeader),
     });
 
     onMounted(async () => {
@@ -95,7 +107,14 @@ export default {
       state.recommends = result;
     });
 
-    return state;
+    const handlerLogin = (): void => {
+      router.replace("/login?login=login");
+    };
+
+    return {
+      ...toRefs(state),
+      handlerLogin,
+    };
   },
 };
 </script>

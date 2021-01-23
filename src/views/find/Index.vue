@@ -72,7 +72,7 @@ export default {
     onMounted(async () => {
       const res = <IBannerResponse>await getBanner();
       state.banners = res.banners;
-      // banner = ref('banner')
+      // window.getComputedStyle{banner.value)
     });
     return {
       ...toRefs(state),

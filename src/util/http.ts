@@ -2,7 +2,7 @@
 import axios, { AxiosError, AxiosPromise, AxiosResponse } from 'axios'
 
 const axiosInstance = axios.create({
-    baseURL: 'http://localhost:3000/',
+    baseURL: 'http://192.168.2.194:3000/',
     timeout: 5000
 })
 
