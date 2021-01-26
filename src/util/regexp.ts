@@ -1,0 +1,1 @@
+export const PhoneRegexp = /^1\d{10}$/

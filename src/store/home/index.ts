@@ -1,5 +1,5 @@
 export interface IState {
-    scorllHeader: boolean
+    scrollHeader: boolean
 }
 
 
@@ -9,7 +9,8 @@ export default {
     },
     mutations: {
         changeScrollHeader: (state: IState, playload: boolean) => {
-            state.scorllHeader = playload
+            state.scrollHeader = playload
         }
-    }
+    },
+    namespaced: true,
 }

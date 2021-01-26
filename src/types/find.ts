@@ -1,11 +1,44 @@
-import { IResponse } from '@/types/http'
+import { IResponse } from "@/types/http";
 export interface IBanner {
-    pic: string,
-    titleColor: string,
-    url: string,
-    typeTitle: string
+  pic: string;
+  titleColor: string;
+  url: string;
+  typeTitle: string;
 }
 export interface IBannerResponse extends IResponse {
-    banners: IBanner[],
-    code: number
+  banners: IBanner[];
+  code: number;
+}
+
+export enum EBlockCode {
+  HOMEPAGE_BANNER = "HOMEPAGE_BANNER",
+  HOMEPAGE_BLOCK_PLAYLIST_RCMD = "HOMEPAGE_BLOCK_PLAYLIST_RCMD",
+  HOMEPAGE_BLOCK_STYLE_RCMD = "HOMEPAGE_BLOCK_STYLE_RCMD",
+  HOMEPAGE_MUSIC_MLOG = "HOMEPAGE_MUSIC_MLOG",
+  HOMEPAGE_MUSIC_CALENDAR = "HOMEPAGE_MUSIC_CALENDAR",
+  HOMEPAGE_BLOCK_OFFICIAL_PLAYLIST = "HOMEPAGE_BLOCK_OFFICIAL_PLAYLIST",
+  HOMEPAGE_BLOCK_NEW_ALBUM_NEW_SONG = "HOMEPAGE_BLOCK_NEW_ALBUM_NEW_SONG",
+  HOMEPAGE_PODCAST24 = "HOMEPAGE_PODCAST24",
+  HOMEPAGE_VOICELIST_RCMD = "HOMEPAGE_VOICELIST_RCMD",
+  HOMEPAGE_BLOCK_VIDEO_PLAYLIST = "HOMEPAGE_BLOCK_VIDEO_PLAYLIST",
+}
+
+export interface IBlock {
+  blockCode: EBlockCode;
+  canClose: boolean;
+  extInfo?: any;
+  showType: string;
+}
+export interface IBlockData {
+  blocks: IBlock[];
+  guideToast: {
+    hasGuideToast: boolean;
+    toastList: [];
+  };
+  hasMore: boolean;
+  pageConfig: {};
+}
+export interface IBlockResponse extends IResponse {
+  code: number;
+  data: IBlockData;
 }

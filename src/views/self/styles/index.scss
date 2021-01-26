@@ -1,6 +1,36 @@
+header{
+  .login{
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    left: 0;
+    .avator-box {
+      border: 1px solid #fff;
+      border-radius: 100%;
+      background: #f6f1f1;
+      width: 28px;
+      height: 28px;
+      text-align: center;
+      overflow: hidden;
+      margin-right: 10px;
+      font-size: 13px;
+      .avator {
+        color: #f9d9d9;
+        display: block;
+        font-size: 22px;
+        padding-top: 5px;
+        &::before {
+          display: block;
+        }
+      }
+    }
+  }
+}
 .main {
   padding: 0 12px 80px;
-  ::v-deep .van-sticky--fixed{
+  ::v-deep .van-sticky--fixed {
     left: 12px;
     right: 12px;
   }
@@ -9,7 +39,7 @@
     display: flex;
     align-items: center;
     font-weight: bold;
-    font-size: 15px;
+    font-size: 16px;
     .avator-box {
       border: 1px solid #fff;
       border-radius: 100%;
@@ -118,11 +148,11 @@
       }
     }
     ::v-deep .van-tabs__content {
-      .playlist-input{
+      .playlist-input {
         padding-top: 15px;
         display: flex;
         align-items: center;
-        .playlist-icon-box{
+        .playlist-icon-box {
           background: #f3f3f3;
           padding: 12px;
           border-radius: 8px;
@@ -136,15 +166,17 @@
       }
     }
   }
-  .albumlist-title{
-    .van-icon-cross{
+  .albumlist-title {
+    .van-icon-cross {
       padding: 5px;
       border-radius: 50%;
       background: #e9e9e9;
       color: #848484;
     }
   }
-  .border-click{
+  .border-click {
     margin-top: 20px;
+    margin-left: 50%;
+    transform: translateX(-50%);
   }
 }

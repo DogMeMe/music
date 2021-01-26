@@ -23,8 +23,13 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/login',
     name: 'Login',
-    component: import(/* webpackChunkName: "login" */ '@/views/login/Index.vue')
+    component: () => import(/* webpackChunkName: "login" */ '@/views/login/Index.vue')
   },
+  {
+    path: '/phonelogin',
+    name: 'PhoneLogin',
+    component: () => import(/* webpackChunkName: "login" */ '@/views/login/PhoneLogin.vue')
+  }
 ]
 
 const router = createRouter({                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        

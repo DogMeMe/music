@@ -11,8 +11,9 @@
 <script lang="ts">
 import { Icon, Sticky } from "vant";
 import { onMounted, onUnmounted, reactive, toRefs } from "vue";
+import { useStore } from "vuex";
 export default {
-  name: "IHeader",
+  name: "HomeHeader",
   components: {
     [Icon.name]: Icon,
     [Sticky.name]: Sticky,
@@ -21,9 +22,13 @@ export default {
     const state = reactive({
       scrollHeader: false,
     });
+    const $store = useStore();
     const scrollListener = (): void => {
-      const scrollTop = window.document.documentElement.scrollTop;
+      const scrollTop =
+        window.document.documentElement.scrollTop ||
+        window.document.body.scrollTop;
       state.scrollHeader = scrollTop > 30;
+      $store.commit("home/changeScrollHeader", state.scrollHeader);
     };
     onMounted(() => {
       window.addEventListener("scroll", scrollListener);
@@ -32,7 +37,7 @@ export default {
       window.removeEventListener("scroll", scrollListener);
     });
 
-    return toRefs(state)
+    return toRefs(state);
   },
 };
 </script>
@@ -42,8 +47,8 @@ header {
   align-items: center;
   justify-content: space-between;
   height: 54px;
-  animation: 1s background;
-  &.scroll-header{
+  transition: 300ms background;
+  &.scroll-header {
     background: #fff;
   }
   .nav-icon-box {

@@ -5,10 +5,9 @@
       <i class="iconfont tinggeshiqu" />
     </i-header>
     <van-swipe
-      ref="banner"
       class="banner"
       :autoplay="3000"
-      :height="bannerHeight"
+      lazy-render
       indicator-color="#fff"
       loop
       @change="bannerChange"
@@ -18,7 +17,7 @@
         :key="targetId"
         :class="`item-${titleColor}-bg`"
       >
-        <img v-lazy="pic" />
+        <img :src="pic" />
         <div class="banner-type" :class="`${titleColor}-bg`">
           {{ typeTitle }}
         </div>
@@ -30,17 +29,30 @@
         <span>{{ name }}</span>
       </van-swipe-item>
     </van-swipe>
+    <template
+      v-for="({ blockCode, uiElement, creatives }, index) in blocks"
+      :key="blockCode"
+    >
+      <horizontal-swiper
+        :class="{ 'no-margin': index === 1 }"
+        v-if="uiElement && uiElement.button && (index === 1 || index === 5)"
+        :list="creatives"
+        :main="uiElement.mainTitle ? uiElement.mainTitle.title : ''"
+        :name="uiElement.button.text"
+        :title="uiElement.subTitle.title"
+      />
+    </template>
   </div>
 </template>
 
 <script lang="ts">
-import { getBanner } from "@/api/find";
-import { IBanner, IBannerResponse } from "@/types/find";
-import { onMounted, reactive, ref, toRefs } from "vue";
+import { getHomepage, getBanner } from "@/api/find";
+import { IBanner, IBlock, EBlockCode } from "@/types/find";
+import { defineComponent, onMounted, reactive, ref, toRefs } from "vue";
 import { Icon, Swipe, SwipeItem, Search } from "vant";
-import { AxiosPromise, AxiosProxyConfig } from "axios";
-import IHeader from "@/components/Iheader.vue";
-export default {
+import IHeader from "@/components/HomeHeader.vue";
+import HorizontalSwiper from "@/components/HorizontalSwiper.vue";
+export default defineComponent({
   name: "Find",
   components: {
     [Icon.name]: Icon,
@@ -48,9 +60,9 @@ export default {
     [SwipeItem.name]: SwipeItem,
     [Search.name]: Search,
     IHeader,
+    HorizontalSwiper,
   },
   setup() {
-    let banner = ref(null);
     const state = reactive({
       banners: [] as IBanner[],
       links: [
@@ -65,22 +77,23 @@ export default {
       ],
       bannerHeight: 138,
       headerColor: "red",
+      blocks: [] as IBlock[],
     });
     const bannerChange = (index: number): void => {
       state.headerColor = state.banners[index].titleColor;
     };
     onMounted(async () => {
-      const res = <IBannerResponse>await getBanner();
+      const res = await getBanner();
       state.banners = res.banners;
-      // window.getComputedStyle{banner.value)
+      state.blocks = (await getHomepage()).data.blocks;
     });
     return {
       ...toRefs(state),
-      banner,
       bannerChange,
+      EBlockCode,
     };
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>
@@ -109,7 +122,7 @@ export default {
   .van-swipe-item {
     color: #fff;
     text-align: center;
-    padding: 0 10px;
+    padding: 0 12px;
     box-sizing: border-box;
     &.item-blue-bg {
       background: linear-gradient(#cfdef0, #fff 70%);
@@ -153,21 +166,32 @@ export default {
 .link.van-swipe {
   padding: 10px 0;
   background: #fff;
+  border-bottom: 1px solid #efefef;
   .van-swipe-item {
     display: flex;
     flex-direction: column;
     align-items: center;
     .link-icon {
       color: #fa3a3b;
-      font-size: 30px;
+      font-size: 28px;
       height: 30px;
       padding: 10px;
       border-radius: 50%;
       background: #fff1f1;
       & ~ span {
         margin-top: 3px;
-        font-size: 13px;
+        font-size: 12px;
       }
+    }
+  }
+}
+.horizontal-swiper {
+  &.no-margin {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    margin-top: 0;
+    ::v-deep .header {
+      padding-top: 12px;
     }
   }
 }

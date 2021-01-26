@@ -1,5 +1,6 @@
 export interface IResponse {
   code: number,
-  message? :string,
-  [param: string]: any
+  message?: string,
+  [param: string]: any,
+
 }

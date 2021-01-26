@@ -63,7 +63,7 @@
 </template>
 
 <script lang="ts">
-import IHeader from "@/components/Iheader.vue";
+import IHeader from "@/components/HomeHeader.vue";
 import Playlist from "@/components/Playlist.vue";
 import AlbumList from "@/components/AlbumList.vue";
 import BorderClick from "@/components/BorderClick.vue";
@@ -103,7 +103,7 @@ export default {
     });
 
     onMounted(async () => {
-      const { result } = <IRecommendResponse>await getPersonalized();
+      const { result } = await getPersonalized();
       state.recommends = result;
     });
 
@@ -114,6 +114,7 @@ export default {
     return {
       ...toRefs(state),
       handlerLogin,
+      store
     };
   },
 };

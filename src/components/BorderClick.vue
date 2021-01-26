@@ -1,38 +1,39 @@
 <template>
   <div class="border-click">
-      <span>{{name}}</span>
-      <van-icon v-if="arrow" name="arrow" />
+    <span>{{ name }}</span>
+    <van-icon v-if="arrow" name="arrow" />
   </div>
 </template>
 
 <script lang="ts">
-import { Icon } from 'vant'
+import { Icon } from "vant";
 export default {
-    name: 'BorderClick',
-    props: {
-        name: String,
-        arrow: {
-            type: Boolean,
-            defeult: true
-        }
+  name: "BorderClick",
+  props: {
+    name: String,
+    arrow: {
+      type: Boolean,
+      defeult: true,
     },
-    components: {
-        [Icon.name]: Icon
-    }
-}
+  },
+  components: {
+    [Icon.name]: Icon,
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-    .border-click{
-        border: 1px solid #ddd;
-        border-radius: 15px;
-        padding: 4px 10px;
-        color: #636363;
-        display: inline-flex;
-        margin-left: 50%;
-        transform: translateX(-50%);
-        align-items: center;
-        font-size: 13px;
-        line-height: 1;
-    }
+.border-click {
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 5px 12px;
+  color: #636363;
+  display: inline-flex;
+  align-items: center;
+  font-size: 12px;
+  line-height: 1;
+  .van-icon-arrow {
+    width: 6px;
+  }
+}
 </style>

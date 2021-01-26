@@ -1,0 +1,4 @@
+import { IResponse } from '@/types/http'
+export interface IVerifyResponse extends IResponse {
+    data: boolean
+}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 

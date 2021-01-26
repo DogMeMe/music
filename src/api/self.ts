@@ -1,6 +1,6 @@
-import { IResponse } from "@/types/http"
+import { IRecommendResponse } from "@/types/self"
 import Api from "./index"
 
-export const getPersonalized = (limit:number = 6): Promise<IResponse> => {
-    return Api(`/personalized?limit=${limit}`)
+export const getPersonalized = (limit:number = 6): Promise<IRecommendResponse> => {
+    return Api(`/personalized?limit=${limit}`) as Promise<IRecommendResponse>
 }

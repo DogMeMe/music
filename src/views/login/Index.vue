@@ -9,7 +9,7 @@
         round
         color="#dc2c1f"
         text="手机号登录"
-        @click="handlerLogin"
+        @click="handlerInto('phone-login')"
       />
       <van-button
         v-if="experienceVisible"
@@ -18,14 +18,14 @@
         round
         text="立即体验"
         color="#dc2c1f"
-        @click="handlerExperience"
+        @click="handlerInto('exprience')"
       />
       <div class="login-others">
         <i
           :class="`iconfont ${i}`"
           v-for="({ i }, index) in others"
           :key="index"
-          @click="handlerLogin"
+          @click="handlerInto(i)"
         />
       </div>
       <van-checkbox
@@ -43,9 +43,10 @@
 </template>
 
 <script lang="ts">
-import { Button, Checkbox, Icon } from "vant";
+import { Button, Checkbox, Icon, Toast } from "vant";
 import { computed, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import toast from '@/components/Toast/toast-info'
 export default {
   name: "Login",
   components: {
@@ -55,8 +56,21 @@ export default {
   },
   setup() {
     const $route = useRoute();
+    const $router = useRouter();
     const checked = ref(false);
     const experienceVisible = computed(() => $route.query.login !== "login");
+    const handlerInto = async (type: string) => {
+      if (!checked.value) {
+        toast('请先勾选同意《用户协议》 《隐私政策》 《儿童隐私政策》')
+        return;
+      }
+      switch (type) {
+        case "phone-login":
+          $router.replace("/phonelogin");
+          break;
+      }
+    };
+    const handlerLogin = () => {};
     return {
       others: [
         { i: "login-wechat" },
@@ -66,6 +80,7 @@ export default {
       ],
       checked,
       experienceVisible,
+      handlerInto,
     };
   },
 };

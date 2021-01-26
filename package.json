@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "core-js": "^3.8.2",
+    "ts-md5": "^1.2.7",
     "vant": "^3.0.2",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0",
@@ -26,7 +27,8 @@
     "sass": "^1.26.5",
     "sass-loader": "^8.0.2",
     "ts-import-plugin": "^1.6.7",
-    "typescript": "~3.9.3"
+    "typescript": "~3.9.3",
+    "vconsole": "^3.4.0"
   },
   "browserslist": [
     "> 1%",
