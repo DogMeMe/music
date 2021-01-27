@@ -1,6 +1,8 @@
 <template>
   <div class="border-click">
+    <slot name="before"></slot>
     <span>{{ name }}</span>
+    <slot name="after"></slot>
     <van-icon v-if="arrow" name="arrow" />
   </div>
 </template>

@@ -67,7 +67,7 @@ import IHeader from "@/components/HomeHeader.vue";
 import Playlist from "@/components/Playlist.vue";
 import AlbumList from "@/components/AlbumList.vue";
 import BorderClick from "@/components/BorderClick.vue";
-import { IRecommend, IRecommendResponse } from "@/types/self";
+import { IRecommend } from "@/types/self";
 import { getPersonalized } from "@/api/self";
 import { Icon, Tab, Tabs } from "vant";
 import { computed, onMounted, reactive, toRefs } from "vue";

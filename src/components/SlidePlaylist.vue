@@ -1,24 +1,23 @@
 <template>
-  <div class="horizontal-swiper">
+  <div class="slide-playlist">
     <div class="header">
-      <div>
-        <div class="header-main-title">{{ main }}</div>
-        <div class="header-title">{{ title }}</div>
-      </div>
+      <div class="header-title">{{ title }}</div>
       <border-click :name="name" arrow />
     </div>
     <van-swipe :loop="false" :show-indicators="false" width="120">
-      <van-swipe-item
-        v-for="{ creativeId, resources, uiElement } in list"
-        :key="creativeId"
-      >
-        <img v-lazy="uiElement.image.imageUrl" />
-        <div class="title">{{ uiElement.mainTitle.title }}</div>
-        <div class="count">
-          <i class="iconfont list-play"/>
-          <span>{{ numberFormat(resources[0].resourceExtInfo.playCount) }}</span>
-        </div>
-      </van-swipe-item>
+      <template v-for="{ creativeId, resources } in list" :key="creativeId">
+        <van-swipe-item
+          v-for="{ uiElement, resourceId, resourceExtInfo } in resources"
+          :key="resourceId"
+        >
+          <img v-lazy="uiElement.image.imageUrl" />
+          <div class="title">{{ uiElement.mainTitle.title }}</div>
+          <div class="count">
+            <i class="iconfont list-play" />
+            <span>{{ numberFormat(resourceExtInfo.playCount) }}</span>
+          </div>
+        </van-swipe-item>
+      </template>
     </van-swipe>
   </div>
 </template>
@@ -36,10 +35,6 @@ export default {
   props: {
     title: String,
     name: String,
-    main: {
-      type: String,
-      default: "",
-    },
     list: {
       type: Array,
       default: () => [],
@@ -56,7 +51,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.horizontal-swiper {
+.slide-playlist {
   background: #fff;
   border-radius: 12px;
   margin-top: 10px;
@@ -66,9 +61,6 @@ export default {
     padding: 20px 12px 0;
     border-radius: 12px;
     align-items: center;
-    .header-main-title {
-      color: #b3b3b3;
-    }
     .header-title {
       font-size: 18px;
     }
@@ -101,7 +93,7 @@ export default {
         border-radius: 12px;
         transform: scale(0.85);
         padding: 0 5px;
-        .list-play{
+        .list-play {
           font-size: 10px;
         }
       }

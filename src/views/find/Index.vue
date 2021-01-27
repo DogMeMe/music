@@ -1,57 +1,71 @@
 <template>
-  <div class="main">
-    <i-header :class="`header ${headerColor}-header`">
-      <van-search placeholder="2020年度听歌报告" />
-      <i class="iconfont tinggeshiqu" />
-    </i-header>
-    <van-swipe
-      class="banner"
-      :autoplay="3000"
-      lazy-render
-      indicator-color="#fff"
-      loop
-      @change="bannerChange"
-    >
-      <van-swipe-item
-        v-for="{ pic, targetId, typeTitle, titleColor } in banners"
-        :key="targetId"
-        :class="`item-${titleColor}-bg`"
+  <van-skeleton :loading="loading">
+    <div class="main">
+      <i-header :class="`header ${headerColor}-header`">
+        <van-search placeholder="2020年度听歌报告" />
+        <i class="iconfont tinggeshiqu" />
+      </i-header>
+      <van-swipe
+        class="banner"
+        :autoplay="3000"
+        lazy-render
+        indicator-color="#fff"
+        loop
+        @change="bannerChange"
       >
-        <img :src="pic" />
-        <div class="banner-type" :class="`${titleColor}-bg`">
-          {{ typeTitle }}
-        </div>
-      </van-swipe-item>
-    </van-swipe>
-    <van-swipe class="link" :width="80" :show-indicators="false" :loop="false">
-      <van-swipe-item v-for="({ name, icon }, index) in links" :key="index">
-        <i :class="`iconfont ${icon}-icon link-icon`" />
-        <span>{{ name }}</span>
-      </van-swipe-item>
-    </van-swipe>
-    <template
-      v-for="({ blockCode, uiElement, creatives }, index) in blocks"
-      :key="blockCode"
-    >
-      <horizontal-swiper
-        :class="{ 'no-margin': index === 1 }"
-        v-if="uiElement && uiElement.button && (index === 1 || index === 5)"
-        :list="creatives"
-        :main="uiElement.mainTitle ? uiElement.mainTitle.title : ''"
-        :name="uiElement.button.text"
-        :title="uiElement.subTitle.title"
-      />
-    </template>
-  </div>
+        <van-swipe-item
+          v-for="{ pic, targetId, typeTitle, titleColor } in banners"
+          :key="targetId"
+          :class="`item-${titleColor}-bg`"
+        >
+          <img :src="pic" />
+          <div class="banner-type" :class="`${titleColor}-bg`">
+            {{ typeTitle }}
+          </div>
+        </van-swipe-item>
+      </van-swipe>
+      <van-swipe
+        class="link"
+        :width="73"
+        :show-indicators="false"
+        :loop="false"
+      >
+        <van-swipe-item v-for="({ name, icon }, index) in links" :key="index">
+          <i :class="`iconfont ${icon}-icon link-icon`" />
+          <span>{{ name }}</span>
+        </van-swipe-item>
+      </van-swipe>
+      <template
+        v-for="({ blockCode, uiElement, creatives, showType }, index) in blocks"
+        :key="blockCode"
+      >
+        <slide-playlist
+          :class="{ 'no-margin': index === 1 }"
+          v-if="showType === 'HOMEPAGE_SLIDE_PLAYLIST'"
+          :list="creatives"
+          :name="uiElement.button.text"
+          :title="uiElement.subTitle.title"
+        />
+        <slide-songlist-align
+          v-if="showType === 'HOMEPAGE_SLIDE_SONGLIST_ALIGN'"
+          :subtitle="uiElement.subTitle.title"
+          :title="uiElement.mainTitle.title"
+          :name="uiElement.button.text"
+          :list="creatives"
+        />
+      </template>
+    </div>
+  </van-skeleton>
 </template>
 
 <script lang="ts">
 import { getHomepage, getBanner } from "@/api/find";
 import { IBanner, IBlock, EBlockCode } from "@/types/find";
 import { defineComponent, onMounted, reactive, ref, toRefs } from "vue";
-import { Icon, Swipe, SwipeItem, Search } from "vant";
+import { Icon, Swipe, SwipeItem, Search, Skeleton } from "vant";
 import IHeader from "@/components/HomeHeader.vue";
-import HorizontalSwiper from "@/components/HorizontalSwiper.vue";
+import SlidePlaylist from "@/components/SlidePlaylist.vue";
+import SlideSonglistAlign from "@/components/SlideSonglistAlign.vue";
 export default defineComponent({
   name: "Find",
   components: {
@@ -59,8 +73,10 @@ export default defineComponent({
     [Swipe.name]: Swipe,
     [SwipeItem.name]: SwipeItem,
     [Search.name]: Search,
+    [Skeleton.name]: Skeleton,
     IHeader,
-    HorizontalSwiper,
+    SlidePlaylist,
+    SlideSonglistAlign,
   },
   setup() {
     const state = reactive({
@@ -79,6 +95,7 @@ export default defineComponent({
       headerColor: "red",
       blocks: [] as IBlock[],
     });
+    const loading = ref(false);
     const bannerChange = (index: number): void => {
       state.headerColor = state.banners[index].titleColor;
     };
@@ -86,11 +103,13 @@ export default defineComponent({
       const res = await getBanner();
       state.banners = res.banners;
       state.blocks = (await getHomepage()).data.blocks;
+      loading.value = false;
     });
     return {
       ...toRefs(state),
       bannerChange,
       EBlockCode,
+      loading,
     };
   },
 });
@@ -157,7 +176,7 @@ export default defineComponent({
       }
     }
   }
-  .van-swipe__indicator {
+  ::v-deep .van-swipe__indicator {
     width: 12px;
     height: 3px;
     margin-right: 3px;
@@ -185,7 +204,7 @@ export default defineComponent({
     }
   }
 }
-.horizontal-swiper {
+.slide-playlist {
   &.no-margin {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
