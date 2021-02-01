@@ -4,6 +4,7 @@ export interface IBanner {
   titleColor: string;
   url: string;
   typeTitle: string;
+  targetId: string
 }
 export interface IBannerResponse extends IResponse {
   banners: IBanner[];
@@ -28,6 +29,19 @@ export interface IBlock {
   canClose: boolean;
   extInfo?: any;
   showType: string;
+  uiElement: {
+    button:{
+      text: string,
+      action: string
+    },
+    mainTitle: {
+      title: string
+    },
+    subTitle: {
+      title: string
+    }
+  }, 
+  creatives: [],
 }
 export interface IBlockData {
   blocks: IBlock[];

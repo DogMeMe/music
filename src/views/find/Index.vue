@@ -45,7 +45,7 @@
           :list="creatives"
           :name="uiElement.button.text"
           :title="uiElement.subTitle.title"
-        />
+        />  
         <slide-songlist-align
           v-if="showType === 'HOMEPAGE_SLIDE_SONGLIST_ALIGN'"
           :subtitle="uiElement.subTitle.title"

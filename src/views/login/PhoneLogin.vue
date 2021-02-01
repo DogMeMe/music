@@ -16,8 +16,8 @@
         <div class="box-renark">
           <template v-if="inputtingCode">
             <span
-              >已发送至{{ ctx.phoneFormat("17629003867", ctcode)
-              }}<van-icon name="edit" @click="colse"
+              >已发送至{{ ctx.phoneFormat(phone, ctcode)
+              }}<van-icon name="edit" @click="close"
             /></span>
             <span>60s</span>
           </template>
@@ -44,6 +44,7 @@
           :value="verifycode"
           :mask="false"
           :gutter="10"
+          :length="4"
           focused
           @focus="keyboardShow = true"
         />
@@ -72,6 +73,7 @@ import { getCurrentInstance, ref, watch } from "vue";
 import toast from "@/components/Toast/toast-info";
 import { PhoneRegexp } from "@/util/regexp.ts";
 import { codeVerify, getCode } from "@/api/login";
+import { useRouter } from 'vue-router';
 
 export default {
   name: "PhoneLogin",
@@ -85,9 +87,10 @@ export default {
     [NumberKeyboard.name]: NumberKeyboard,
   },
   setup() {
+    const $router = useRouter()
     const ctcode = ref(86);
     const phone = ref("");
-    const inputtingCode = ref(true);
+    const inputtingCode = ref(false);
     const keyboardShow = ref(false);
     const verifycode = ref("");
     const { ctx }: any = getCurrentInstance();
@@ -100,14 +103,16 @@ export default {
         toast("请输入11位数字的手机号");
         return;
       }
-      const { data } = await getCode(phone.value, ctcode.value);
-      inputtingCode.value = data;
-      keyboardShow.value = data;
+      // const { data } = await getCode(phone.value, ctcode.value);
+      // inputtingCode.value = data;
+      // keyboardShow.value = data;
+      $router.push(`/passwordlogin?phone=${phone.value}`)
     };
     const close = () => {
       if (inputtingCode.value) {
         inputtingCode.value = false;
-      }
+        return
+      } 
     };
     const handlerPhone = async () => {
       const { data } = await codeVerify(
@@ -115,10 +120,14 @@ export default {
         verifycode.value,
         ctcode.value
       );
+      if(data){
+        inputtingCode.value = false
+        $router.push('/passwordlogin')
+      }
     };
     watch(verifycode, (val) => {
-      if (val && val.length >= 6) {
-        verifycode.value = val.substr(0, 6);
+      if (val && val.length >= 4) {
+        verifycode.value = val.substr(0, 4);
         handlerPhone();
       }
     });

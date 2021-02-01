@@ -2,17 +2,19 @@
   <i-header>
     <div v-show="headerLoginVisible" class="login">
       <div class="avator-box">
-        <i class="iconfont avator" />
+        <van-image v-if="avatarUrl" :src="avatarUrl" />
+        <i v-else class="iconfont avator" />
       </div>
-      <span>立即登录</span>
+      <span>{{nickname || '立即登录'}}</span>
     </div>
   </i-header>
   <div class="main">
     <div class="login" @click="handlerLogin">
       <div class="avator-box">
-        <i class="iconfont avator" />
+        <van-image v-if="avatarUrl" :src="avatarUrl" />
+        <i v-else class="iconfont avator" />
       </div>
-      <span>立即登录</span>
+      <span>{{nickname || '立即登录'}}</span>
       <van-icon name="arrow" />
     </div>
     <div class="apps">
@@ -67,9 +69,10 @@ import IHeader from "@/components/HomeHeader.vue";
 import Playlist from "@/components/Playlist.vue";
 import AlbumList from "@/components/AlbumList.vue";
 import BorderClick from "@/components/BorderClick.vue";
+import { useAccountInfo } from "@/hooks/account";
 import { IRecommend } from "@/types/self";
 import { getPersonalized } from "@/api/self";
-import { Icon, Tab, Tabs } from "vant";
+import { Icon, Tab, Tabs, Image } from "vant";
 import { computed, onMounted, reactive, toRefs } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
@@ -83,9 +86,10 @@ export default {
     [Icon.name]: Icon,
     [Tabs.name]: Tabs,
     [Tab.name]: Tab,
+    [Image.name]: Image
   },
   setup() {
-    const store = useStore();
+    const $store = useStore();
     const router = useRouter();
     const state = reactive({
       apps: [
@@ -99,22 +103,24 @@ export default {
       ],
       likeNum: 27,
       recommends: [] as IRecommend[],
-      headerLoginVisible: computed(() => store.state.home.scrollHeader),
+      headerLoginVisible: computed(() => $store.state.home.scrollHeader),
     });
 
+    const accountState = useAccountInfo();
     onMounted(async () => {
       const { result } = await getPersonalized();
       state.recommends = result;
     });
 
     const handlerLogin = (): void => {
-      router.replace("/login?login=login");
+      router.push("/login?login=login");
     };
 
     return {
       ...toRefs(state),
       handlerLogin,
-      store
+      $store,
+      ...toRefs(accountState)
     };
   },
 };
