@@ -1,53 +1,42 @@
 <template>
-  <div class="albumlist-title">
-    <span>{{ name }}</span>
-    <slot name="album-title-icon" />
-  </div>
-  <div class="albumlist-list">
-    <div class="albumlist-item" v-for="{ id, picUrl, name } in list" :key="id">
-      <img :src="picUrl" />
-      <div class="albumlist-name">{{ name }}</div>
+  <div class="playlist">
+    <div class="playlist-title">
+      <span>{{name}}</span>
+      <div class="playlist-title-icons">
+        <slot name="titleicon" />
+        <i class="iconfont more-point" />
+      </div>
     </div>
+    <slot />
   </div>
 </template>
 
 <script>
 export default {
   name: "AlbumList",
-  props: ["name", "list"],
+  props: ['name'],
+  setup(props){
+
+  }
 };
 </script>
 
 <style lang="scss" scoped>
-.albumlist-title {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-weight: bold;
-  margin-top: 15px;
-}
-.albumlist-list {
-  overflow: hidden;
-  .albumlist-item {
-    float: left;
-    width: 30%;
-    margin-right: 5%;
-    margin-top: 10px;
-    &:nth-child(3n){
-      margin-right: 0;
-    }
-    img{
-      width: 100%;
-      border-radius: 12px;
-    }
-    .albumlist-name{
-      font-size: 12px;
-      -webkit-line-clamp: 2;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      -webkit-box-orient: vertical;
-      display: -webkit-box;
-      // transform: scale(.85);
+.playlist {
+  background: #fff;
+  border-radius: 12px;
+  padding: 15px;
+  margin-top: 10px;
+  .playlist-title {
+    font-size: 12px;
+    color: #a9a9a9;
+    .playlist-title-icons {
+      float: right;
+      i {
+        color: #a9a9a9;
+        font-size: 14px;
+        padding-left: 10px;
+      }
     }
   }
 }

@@ -27,5 +27,18 @@ export default {
       }
       return number;
     };
+    app.config.globalProperties.arrToObj = <T extends { _id: string }>(
+      arr: Array<T>
+    ) => {
+      return arr.reduce((pre, cur) => {
+        if (cur._id) {
+          pre[cur._id] = cur;
+        }
+        return pre
+      }, {} as {[key: string]: T});
+    };
+    app.config.globalProperties.objToArr = <T>(obj: {[key: string]: T}) : Array<T> => {
+      return Object.keys(obj).map(key => obj[key])
+    }
   },
 };

@@ -1,5 +1,11 @@
 <template>
-  <router-view />
+  <router-view v-slot="{ Component }">
+    <transition>
+      <keep-alive>
+      <component :is="Component" />
+    </keep-alive>
+    </transition>
+  </router-view>
   <van-tabbar route active-color="#dc3433" inactive-color="#999">
     <van-tabbar-item replace to="/find" icon="find netease-icon iconfont"
       >发现</van-tabbar-item

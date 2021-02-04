@@ -1,7 +1,7 @@
 <template>
   <div class="password-login">
     <m-header title="手机号登录" leftIcon="header-close" />
-    <van-form @submit="submit">
+     <van-form @submit="submit">
       <van-field
         type="password"
         autofocus
@@ -12,6 +12,22 @@
         >登录</van-button
       >
     </van-form>
+    <!-- <m-form>
+      <van-field
+        type="password"
+        autofocus
+        v-model.trim="password"
+        placeholder="请输入密码"
+        :error="false"
+        error-message=""
+        :rules="[{required: true, message: '请输入密码'}]"
+      />
+      <template v-slot:submit>
+        <van-button color="#fe3a3b" round block native-type="submit"
+        >登录</van-button
+      >
+      </template>
+    </m-form> -->
   </div>
 </template>
 <script lang="ts">
@@ -22,6 +38,7 @@ import toast from "@/components/Toast/toast-info";
 import { phoneLogin } from "@/api/login";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
+import MForm from "@/components/MForm.vue";
 export default defineComponent({
   name: "PasswordLogin",
   components: {
@@ -29,6 +46,7 @@ export default defineComponent({
     [Field.name]: Field,
     [Button.name]: Button,
     [Form.name]: Form,
+    MForm,
   },
   setup() {
     const password = ref("");
@@ -48,7 +66,7 @@ export default defineComponent({
         account,
         profile,
       });
-      $router.go(-2)
+      $router.go(-2);
     };
     return {
       password,

@@ -45,7 +45,7 @@
           :list="creatives"
           :name="uiElement.button.text"
           :title="uiElement.subTitle.title"
-        />  
+        />
         <slide-songlist-align
           v-if="showType === 'HOMEPAGE_SLIDE_SONGLIST_ALIGN'"
           :subtitle="uiElement.subTitle.title"
@@ -59,13 +59,13 @@
 </template>
 
 <script lang="ts">
-import { getHomepage, getBanner } from "@/api/find";
-import { IBanner, IBlock, EBlockCode } from "@/types/find";
-import { defineComponent, onMounted, reactive, ref, toRefs } from "vue";
+import { EBlockCode } from "@/types/find";
+import { defineComponent, reactive, ref, toRefs } from "vue";
 import { Icon, Swipe, SwipeItem, Search, Skeleton } from "vant";
 import IHeader from "@/components/HomeHeader.vue";
 import SlidePlaylist from "@/components/SlidePlaylist.vue";
 import SlideSonglistAlign from "@/components/SlideSonglistAlign.vue";
+import { useBanner, useBlock } from "@/hooks/find";
 export default defineComponent({
   name: "Find",
   components: {
@@ -80,7 +80,6 @@ export default defineComponent({
   },
   setup() {
     const state = reactive({
-      banners: [] as IBanner[],
       links: [
         { icon: "day", name: "每日推荐" },
         { icon: "fm", name: "私人FM" },
@@ -91,24 +90,18 @@ export default defineComponent({
         { icon: "sing-chat", name: "唱聊" },
         { icon: "game", name: "游戏专区" },
       ],
-      bannerHeight: 138,
-      headerColor: "red",
-      blocks: [] as IBlock[],
     });
     const loading = ref(false);
-    const bannerChange = (index: number): void => {
-      state.headerColor = state.banners[index].titleColor;
-    };
-    onMounted(async () => {
-      const res = await getBanner();
-      state.banners = res.banners;
-      state.blocks = (await getHomepage()).data.blocks;
-      loading.value = false;
-    });
+
+    const { banners, bannerChange, headerColor } = useBanner();
+    const { blocks } = useBlock();
     return {
       ...toRefs(state),
+      banners,
+      headerColor,
       bannerChange,
       EBlockCode,
+      blocks,
       loading,
     };
   },

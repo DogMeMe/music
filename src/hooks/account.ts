@@ -8,7 +8,10 @@ export const useAccountInfo = () => {
       return $store.state.account.profile.avatarUrl;
     }),
     nickname: computed(() => {
-      return $store.state.account.profile.nickname;
+      return $store.state.account.profile.nickname || '立即登录';
     }),
+    isLogin: computed(() => {
+        return !!$store.state.account.profile.nickname
+    })
   };
 };

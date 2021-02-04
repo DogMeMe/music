@@ -1,12 +1,11 @@
-import { IResponse } from "@/types/http";
 export interface IBanner {
   pic: string;
   titleColor: string;
   url: string;
   typeTitle: string;
-  targetId: string
+  targetId: string;
 }
-export interface IBannerResponse extends IResponse {
+export interface IBannerResponse {
   banners: IBanner[];
   code: number;
 }
@@ -30,20 +29,27 @@ export interface IBlock {
   extInfo?: any;
   showType: string;
   uiElement: {
-    button:{
-      text: string,
-      action: string
-    },
+    button: {
+      text: string;
+      action: string;
+    };
     mainTitle: {
-      title: string
-    },
+      title: string;
+    };
     subTitle: {
-      title: string
-    }
-  }, 
-  creatives: [],
+      title: string;
+    };
+  };
+  creatives: [];
 }
-export interface IBlockData {
+
+export interface IBlockResponse {
+  code: number;
+  message: string,
+  data: IBlockWrapper
+}
+
+export interface IBlockWrapper {
   blocks: IBlock[];
   guideToast: {
     hasGuideToast: boolean;
@@ -52,7 +58,9 @@ export interface IBlockData {
   hasMore: boolean;
   pageConfig: {};
 }
-export interface IBlockResponse extends IResponse {
-  code: number;
-  data: IBlockData;
+
+export interface IPlay {
+  id: string;
+  picUrl: string;
+  name: string;
 }
